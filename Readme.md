@@ -9,6 +9,6 @@ In the following table you should document the resources of your rest-api to mak
 | --- | --- | --- | --- | --- | --- |
 | Register a user | POST | /register | username:str, password:str | 200 OK | 
 | Store a sentence | POST | /store | username:str, password:str, sentence:str | 200 OK, 301 Out of Tokens, 302 Invalid Username Password Combination |
-| Retrive a sentence | Post | /get | username:str, password: str | 200 OK, 301 Out of Tokens, 302 Invalid Username Password Combination |
+| Retrive a sentence | POST | /get | username:str, password: str | 200 OK, 301 Out of Tokens, 302 Invalid Username Password Combination |
 
 Happy Hacking!
