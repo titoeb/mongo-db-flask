@@ -1,5 +1,6 @@
-from flask import Flask
-from flask_restful import Api, Resource
+from flask import Flask, jsonify
+import bcrypt
+from flask_restful import Api, Resource, request
 from pymongo import MongoClient
 
 # Set-up App
@@ -8,22 +9,31 @@ api = Api(app)
 
 # Initiallize db connection
 client = MongoClient("mongodb://mongo-db:27017")
-db = client.aNewDB
-# Select the UserNum collection
-UserNum = db["UserNum"]
-# Initiallize the number of user in the website as 0.
-UserNum.insert({
-    "number_of_users": 0
-})
+db = client.SentencesDatabase
+users = db["users"]
 
-class Visit(Resource):
-    def get(self):
-        previous_number = UserNum.find({})[0]["number_of_users"]
-        current_number = previous_number + 1
-        UserNum.update({}, {"$set":{"number_of_users": current_number}})
-        return f"Hello user {current_number}"
+class Register(Resource):
+    def post(self):
+        postedData = request.get_json()
 
-api.add_resource(Visit, "/visit")
+        # Parse inputs
+        username = postedData["username"]
+        password = postedData["password"]
+        # Hash user password
+        hashed_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+        # Store the user data into the database.
+        users.insert({
+            "Username": username,
+            "Password": hashed_password,
+            "sentence": ""
+        })
+        retJson = {
+                "status": 200,
+                "msg": "User was sucessfully created"
+        }
+        return jsonify(retJson)
+
+api.add_resource(Register, "/register")
 
 if __name__ == "__main__":
     	app.run(debug=True)
