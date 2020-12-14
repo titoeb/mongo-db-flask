@@ -97,6 +97,8 @@ class Get(Resource):
                     "msg": "You don't have enough tokens!"
                 }))
 
+        users.update({"Username": username}, {"$set": {"Tokens": number_tokens-1}})
+
         sentence = users.find({
             "Username": username})[0]["Sentence"]
 
