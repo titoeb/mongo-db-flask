@@ -8,3 +8,8 @@ services:
       - "5000:5000"
     volumes:
       - "./src:/usr/src:rw"
+    links:
+      - mongo-db
+  mongo-db:
+    image: mongo
+    restart: always

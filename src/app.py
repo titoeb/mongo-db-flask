@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource
-from pymongo MongoClient
+from pymongo import MongoClient
 
 # Set-up App
 app = Flask(__name__)
@@ -20,7 +20,7 @@ class Visit(Resource):
     def get(self):
         previous_number = UserNum.find({})[0]["number_of_users"]
         current_number = previous_number + 1
-        UserNum.update({}, {$set:{"number_of_users": current_number}})
+        UserNum.update({}, {"$set":{"number_of_users": current_number}})
         return f"Hello user {current_number}"
 
 api.add_resource(Visit, "/visit")
